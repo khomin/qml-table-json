@@ -8,6 +8,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 
+#define TEST_WITH_FILE
 #ifdef TEST_WITH_FILE
 #include <QFile>
 #endif

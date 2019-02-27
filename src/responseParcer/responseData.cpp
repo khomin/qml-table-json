@@ -5,11 +5,11 @@ ResponseData::ResponseData(QObject *parent) : QObject(parent)
 
 }
 
-void ResponseData::addValue(QVariant key, QVariant value, QVariant isCoordinate) {
+void ResponseData::addValue(QVariant key, QVariant value, ColorType colorType) {
     auto i = std::make_shared<sRes>();
     i->key = key;
     i->value = value;
-    i->isCoordinate = isCoordinate;
+    i->colorType = colorType;
     res.push_back(std::move(i));
 }
 

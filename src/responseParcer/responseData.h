@@ -13,13 +13,19 @@ class ResponseData : public QObject
 public:
     explicit ResponseData(QObject *parent = nullptr);
 
-    void addValue(QVariant key, QVariant value, QVariant isCoordinate);
+    typedef enum {
+        COLOR_TYPE_TRANSPARENT,
+        COLOR_TYPE_RED,
+        COLOR_TYPE_GREEN
+    }ColorType;
 
     typedef struct {
         QVariant key;
         QVariant value;
-        QVariant isCoordinate;
+        ColorType colorType;
     }sRes;
+
+    void addValue(QVariant key, QVariant value, ColorType colorType);
 
     QVector<std::shared_ptr<ResponseData::sRes>> getResult();
 

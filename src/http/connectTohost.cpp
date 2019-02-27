@@ -27,7 +27,6 @@ void ConnectToHost::toConnect() {
                 qDebug() << "ConnectToHost: sendRequest Ready";
                 emit sendRequestReadyResponse(file->readAll());
                 file->close();
-            } else {
             }
 #else
             if(reply->error() == QNetworkReply::NetworkError::NoError) {

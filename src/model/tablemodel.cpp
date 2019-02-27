@@ -4,21 +4,21 @@
 TableModel::TableModel(QObject *parent) {
     roleNameMapping[TableRoles::TableModelRoleKey] = "columnKey";
     roleNameMapping[TableRoles::TableModelRoleValue] = "columnValue";
-    roleNameMapping[TableRoles::TableModelRoleIsCoordinate] = "isCoordinate";
+    roleNameMapping[TableRoles::TableModelRoleIsColorType] = "colorType";
 }
 
 void TableModel::loadDataToModel(QVector<std::shared_ptr<ResponseData>> & data) {
     for(auto root: data) {
         auto result = root->getResult();
         for(auto item: result) {
-            addItem(item->key, item->value, item->isCoordinate);
+            addItem(item->key, item->value, item->colorType);
         }
     }
 }
 
-void TableModel::addItem(QVariant name, QVariant value, QVariant isCoordinate) {
+void TableModel::addItem(QVariant name, QVariant value, ResponseData::ColorType colorType) {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    tableItems << new TableItem(name.toString(), value.toString(), isCoordinate.toBool());
+    tableItems << new TableItem(name.toString(), value.toString(), colorType);
     endInsertRows();
 }
 
@@ -41,8 +41,8 @@ QVariant TableModel::data(const QModelIndex &index, int role) const {
         return item->getKey();
     } else if (role == TableRoles::TableModelRoleValue) {
         return item->getValue();
-    } else if (role == TableRoles::TableModelRoleIsCoordinate) {
-        return item->getIsCoordinate();
+    } else if (role == TableRoles::TableModelRoleIsColorType) {
+        return item->getColorType();
     }
     return QVariant();
 }

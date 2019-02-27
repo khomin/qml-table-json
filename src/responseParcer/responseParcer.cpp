@@ -31,28 +31,39 @@ void ResponseParcer::startParce(QByteArray data) {
 
                 auto obj = arrayItem.toObject();
 
-                tres->addValue("id", obj.value("id").toInt(), false);
-                tres->addValue("name", obj.value("name").toString(), false);
-                tres->addValue("username", obj.value("username").toString(), false);
-                tres->addValue("email", obj.value("email").toString(), false);
+                // --- id должен менять цвет ---//
+                int id = obj.value("id").toInt();
+                auto idColor = ResponseData::COLOR_TYPE_TRANSPARENT;
+
+                tres->addValue("name", obj.value("name").toString(), ResponseData::COLOR_TYPE_TRANSPARENT);
+                tres->addValue("username", obj.value("username").toString(), ResponseData::COLOR_TYPE_TRANSPARENT);
+                tres->addValue("email", obj.value("email").toString(), ResponseData::COLOR_TYPE_TRANSPARENT);
 
                 auto addrArray = obj.value("address").toObject();
-                tres->addValue("street", addrArray.value("street").toString(), false);
-                tres->addValue("suite", addrArray.value("suite").toString(), false);
-                tres->addValue("city", addrArray.value("city").toString(), false);
+                tres->addValue("street", addrArray.value("street").toString(), ResponseData::COLOR_TYPE_TRANSPARENT);
+                tres->addValue("suite", addrArray.value("suite").toString(), ResponseData::COLOR_TYPE_TRANSPARENT);
+                tres->addValue("city", addrArray.value("city").toString(), ResponseData::COLOR_TYPE_TRANSPARENT);
 
                 auto geo = addrArray.value("geo").toObject();
-                tres->addValue("lat", geo.value("lat").toString(), true);
-                tres->addValue("lng", geo.value("lng").toString(), true);
 
-                tres->addValue("phone", obj.value("phone").toString(), false);
-                tres->addValue("website", obj.value("website").toString(), false);
+                //--- geo должны менять цвет ---//
+                tres->addValue("lat", geo.value("lat").toString(), QString(geo.value("lat").toString()).toDouble() >= 0 ? ResponseData::COLOR_TYPE_GREEN : ResponseData::COLOR_TYPE_RED);
+                tres->addValue("lng", geo.value("lng").toString(), QString(geo.value("lng").toString()).toDouble() >= 0 ? ResponseData::COLOR_TYPE_GREEN : ResponseData::COLOR_TYPE_RED);
+
+                // --- в конце можно понять каким цветом id ---//
+                idColor = QString(geo.value("lat").toString()).toDouble() >= 0 ? ResponseData::COLOR_TYPE_GREEN : ResponseData::COLOR_TYPE_RED;
+
+                tres->addValue("phone", obj.value("phone").toString(), ResponseData::COLOR_TYPE_TRANSPARENT);
+                tres->addValue("website", obj.value("website").toString(), ResponseData::COLOR_TYPE_TRANSPARENT);
 
                 auto company = obj.value("company").toObject();
-                tres->addValue("nameCompany", company.value("name").toString(), false);
-                tres->addValue("catchPhrase", company.value("catchPhrase").toString(), false);
-                tres->addValue("bs", company.value("bs").toString(), false);
-                tres->addValue("website", obj.value("website").toString(), false);
+                tres->addValue("nameCompany", company.value("name").toString(), ResponseData::COLOR_TYPE_TRANSPARENT);
+                tres->addValue("catchPhrase", company.value("catchPhrase").toString(), ResponseData::COLOR_TYPE_TRANSPARENT);
+                tres->addValue("bs", company.value("bs").toString(), ResponseData::COLOR_TYPE_TRANSPARENT);
+                tres->addValue("website", obj.value("website").toString(), ResponseData::COLOR_TYPE_TRANSPARENT);
+
+                // --- в конце можно понять каким цветом id ---//
+                tres->addValue("id", id, idColor);
 
                 parceData.push_back(std::move(tres));
             }

@@ -18,12 +18,12 @@ public:
     enum TableRoles {
         TableModelRoleKey = Qt::UserRole + 1,
         TableModelRoleValue,
-        TableModelRoleIsCoordinate
+        TableModelRoleIsColorType
     };
 
     void loadDataToModel(QVector<std::shared_ptr<ResponseData>> & data);
 
-    void addItem(QVariant name, QVariant value, QVariant isCoordinate);
+    void addItem(QVariant name, QVariant value, ResponseData::ColorType colorType);
 
     int rowCount(const QModelIndex & parent = QModelIndex()) const;
 

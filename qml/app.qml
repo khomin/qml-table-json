@@ -49,7 +49,7 @@ ApplicationWindow {
                 height: 25
                 Rectangle {
                     anchors.fill: parent
-                    color: model.isCoordinate ? (parseInt(styleData.value) >= 0 ? "green" : "red") : "transparent"
+                    color: colorCalc()
                     radius: 90
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
@@ -57,6 +57,9 @@ ApplicationWindow {
                         color: styleData.textColor
                         elide: styleData.elideMode
                         text: styleData.value
+                    }
+                    function colorCalc() {
+                        return model.colorType === 0 ? "transparent" : (model.colorType === 1 ? "red" : "green");
                     }
                 }
             }
