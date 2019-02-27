@@ -25,7 +25,11 @@ public:
         ColorType colorType;
     }sRes;
 
-    void addValue(QVariant key, QVariant value, ColorType colorType);
+    int appendValue(QVariant key, QVariant value, ColorType colorType);
+
+    ResponseData::ColorType getValueColorType(int index);
+
+    void updateValueColor(int index, ResponseData::ColorType colorType);
 
     QVector<std::shared_ptr<ResponseData::sRes>> getResult();
 

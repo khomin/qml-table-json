@@ -39,7 +39,7 @@ ApplicationWindow {
                   colorGroup: SystemPalette.Active
                }
                color: {
-                  var baseColor = styleData.alternate?myPalette.alternateBase:myPalette.base
+                  var baseColor = styleData.alternate ? myPalette.alternateBase : myPalette.base
                   return styleData.selected?myPalette.highlight:baseColor
                }
             }
@@ -49,7 +49,7 @@ ApplicationWindow {
                 height: 25
                 Rectangle {
                     anchors.fill: parent
-                    color: colorCalc()
+                    color: model.colorType === 0 ? "transparent" : (model.colorType === 1 ? "red" : "green");
                     radius: 90
                     Text {
                         anchors.verticalCenter: parent.verticalCenter
@@ -57,9 +57,6 @@ ApplicationWindow {
                         color: styleData.textColor
                         elide: styleData.elideMode
                         text: styleData.value
-                    }
-                    function colorCalc() {
-                        return model.colorType === 0 ? "transparent" : (model.colorType === 1 ? "red" : "green");
                     }
                 }
             }

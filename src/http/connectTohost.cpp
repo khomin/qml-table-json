@@ -3,11 +3,24 @@
 #include <QDebug>
 #include <QAuthenticator>
 
+#ifdef TEST_WITH_FILE
+#include <QDir>
+#endif
+
 ConnectToHost::ConnectToHost(QString destHostAddr) {
     url = QUrl::fromUserInput(destHostAddr);
 }
 
 void ConnectToHost::toConnect() {
+#ifdef TEST_WITH_FILE
+    qDebug() << QDir::currentPath();
+            file = new QFile(QDir::currentPath() +  "/input_response.txt");
+            if(file->open(QIODevice::ReadOnly)) {
+                qDebug() << "ConnectToHost: sendRequest Ready";
+                emit sendRequestReadyResponse(file->readAll());
+                file->close();
+            }
+#else
     if(url.isValid()) {
 
         connect(&networkAccessManager, &QNetworkAccessManager::sslErrors, this,
@@ -19,16 +32,6 @@ void ConnectToHost::toConnect() {
 
         connect(&networkAccessManager, &QNetworkAccessManager::finished, this,
                 [&](QNetworkReply* reply) {
-#ifdef TEST_WITH_FILE
-            file = new QFile("D://PROJECTs//TEST//TEST//pg-energo_test//input_response.txt");
-            file->open(QIODevice::ReadOnly);
-            if(file->isOpen()) {
-                file->open(QIODevice::ReadOnly);
-                qDebug() << "ConnectToHost: sendRequest Ready";
-                emit sendRequestReadyResponse(file->readAll());
-                file->close();
-            }
-#else
             if(reply->error() == QNetworkReply::NetworkError::NoError) {
                 auto data = reply->readAll();
                 if(!data.isEmpty()) {
@@ -39,7 +42,6 @@ void ConnectToHost::toConnect() {
             } else {
                 emit connectError(QString("error type: empty response [%1]").arg(reply->errorString()));
             }
-#endif
         });
 
         connect(&networkAccessManager, &QNetworkAccessManager::authenticationRequired, this, [&]
@@ -54,4 +56,5 @@ void ConnectToHost::toConnect() {
     } else {
         emit connectError("error type: destination host address");
     }
+#endif
 }
