@@ -18,10 +18,10 @@ ResponseParcer::~ResponseParcer() {
 }
 
 void ResponseParcer::startParce(QByteArray data) {
-    auto i = data.indexOf("\r\n\r\n");
+    auto i = data.indexOf("\n\n");
     if(i > 0) {
         try {
-            QByteArray d = QByteArray(data.data() + i + strlen("\r\n\r\n"));
+            QByteArray d = QByteArray(data.data() + i + strlen("\n\n"));
             QJsonDocument document = QJsonDocument::fromJson(d);
 
             QJsonArray rootArray = document.array();

@@ -11,6 +11,12 @@ ConnectToHost::ConnectToHost(QString destHostAddr) {
     url = QUrl::fromUserInput(destHostAddr);
 }
 
+ConnectToHost::~ConnectToHost() {
+#ifdef TEST_WITH_FILE
+    delete file;
+#endif
+}
+
 void ConnectToHost::toConnect() {
 #ifdef TEST_WITH_FILE
     qDebug() << QDir::currentPath();

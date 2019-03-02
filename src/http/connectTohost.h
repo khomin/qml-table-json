@@ -18,7 +18,7 @@ class ConnectToHost : public QObject
     Q_OBJECT
 public:
     ConnectToHost(QString destIpAddr);
-
+    ~ConnectToHost();
     void startRequest(const QUrl &requestedUrl);
     void toConnect();
 

@@ -9,11 +9,11 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
-    Application* application = new Application();
+    Application application;
 
-    engine.rootContext()->setContextProperty("test_application", application);
+    engine.rootContext()->setContextProperty("test_application", &application);
 
-    engine.rootContext()->setContextProperty("tableDataModel", application->getModel());
+    engine.rootContext()->setContextProperty("tableDataModel", application.getModel());
 
     engine.load(QUrl(QStringLiteral("qrc:/qml/app.qml")));
 

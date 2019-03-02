@@ -5,6 +5,7 @@
 #include "src/model/tablemodel.h"
 #include <src/http/connectTohost.h>
 #include <src/responseParcer/responseParcer.h>
+#include <memory>
 
 class Application : public QObject
 {
@@ -22,9 +23,9 @@ signals:
 
 private:
 
-    ConnectToHost * connectToHost;
-    ResponseParcer* responseParcer;
-    TableModel* tableModel;
+    std::shared_ptr<ConnectToHost> connectToHost;
+    std::shared_ptr<ResponseParcer> responseParcer;
+    std::shared_ptr<TableModel> tableModel;
 };
 
 #endif // APPLICATION_H

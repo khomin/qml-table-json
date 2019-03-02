@@ -34,7 +34,7 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
 private:
-    QVector<TableItem*> tableItems;
+    QVector<std::shared_ptr<TableItem>> tableItems;
     QHash<int, QByteArray> roleNameMapping;
 };
 

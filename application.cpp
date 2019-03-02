@@ -3,15 +3,15 @@
 #include <QtDebug>
 
 Application::Application(QObject *parent) : QObject(parent) {
-    this->tableModel = new TableModel();
+    this->tableModel = std::make_shared<TableModel>();
 
-    this->connectToHost = new ConnectToHost("jsonplaceholder.typecode.com");
+    this->connectToHost = std::make_shared<ConnectToHost>("jsonplaceholder.typecode.com");
 
-    this->responseParcer = new ResponseParcer();
+    this->responseParcer = std::make_shared<ResponseParcer>();
 
-    connect(connectToHost, &ConnectToHost::connectError, this, &Application::connectToHostError);
+    connect(connectToHost.get(), &ConnectToHost::connectError, this, &Application::connectToHostError);
 
-    connect(connectToHost, &ConnectToHost::sendRequestReadyResponse, this, [&](QByteArray data) {
+    connect(connectToHost.get(), &ConnectToHost::sendRequestReadyResponse, this, [&](QByteArray data) {
         responseParcer->startParce(data);
 
         if(responseParcer->getStatus() == ResponseParcer::Status::Status_Ok) {
@@ -25,7 +25,7 @@ Application::Application(QObject *parent) : QObject(parent) {
         }
     });
 
-    connect(connectToHost, &ConnectToHost::sendRequestError, this, &Application::connectSendRequestError);
+    connect(connectToHost.get(), &ConnectToHost::sendRequestError, this, &Application::connectSendRequestError);
 
     QTimer::singleShot(500, Qt::CoarseTimer, this, [&] {
         connectToHost->toConnect();
@@ -33,5 +33,5 @@ Application::Application(QObject *parent) : QObject(parent) {
 }
 
 TableModel* Application::getModel() {
-    return tableModel;
+    return tableModel.get();
 }

@@ -18,7 +18,7 @@ void TableModel::loadDataToModel(QVector<std::shared_ptr<ResponseData>> & data) 
 
 void TableModel::addItem(QVariant name, QVariant value, ResponseData::ColorType colorType) {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    tableItems << new TableItem(name.toString(), value.toString(), colorType);
+    tableItems << std::make_shared<TableItem>(name.toString(), value.toString(), colorType);
     endInsertRows();
 }
 
@@ -36,7 +36,7 @@ QVariant TableModel::data(const QModelIndex &index, int role) const {
     if (index.row() < 0 || index.row() >= tableItems.count())
         return QVariant();
 
-    TableItem * item = tableItems[index.row()];
+    TableItem * item = tableItems[index.row()].get();
     if (role == TableRoles::TableModelRoleKey) {
         return item->getKey();
     } else if (role == TableRoles::TableModelRoleValue) {
